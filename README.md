@@ -6,9 +6,9 @@ Automated collection of UEFI Secure Boot 2023 certificate minimum firmware versi
 
 ## Features
 
-- **Daily Updates**: Automatically checks for firmware version updates daily at 6:00 AM UTC
+- **Dynamic Daily Updates**: Automatically checks for minimum firmware version updates daily at 6:00 AM UTC
 - **Multi-Vendor Support**: Maintains data for Dell and HP platforms
-- **Version Tracking**: Records minimum BIOS/firmware versions required for UEFI CA 2023
+- **Version Tracking**: Records minimum BIOS/firmware versions required for UEFI Secure Boot CA 2023
 - **Structured Data**: JSON format for easy integration with scripts and automation
 
 ## Data Files
