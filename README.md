@@ -1,10 +1,15 @@
-# UEFI-CA-2023-Workstation-Support
+# Secure Boot Certificate Data
+
+[![Update Secure Boot Data](https://github.com/AU-Mark/UEFI-CA-2023-Workstation-Support/actions/workflows/update-data.yml/badge.svg)](https://github.com/AU-Mark/UEFI-CA-2023-Workstation-Support/actions/workflows/update-data.yml)
 
 Automated collection of UEFI Secure Boot 2023 certificate minimum firmware versions from Dell and HP.
 
-## Overview
+## Features
 
-This repository maintains up-to-date JSON files containing the minimum BIOS/firmware versions required for Windows UEFI CA 2023 certificate support across Dell and HP platforms.
+- **Daily Updates**: Automatically checks for firmware version updates daily at 6:00 AM UTC
+- **Multi-Vendor Support**: Maintains data for Dell and HP platforms
+- **Version Tracking**: Records minimum BIOS/firmware versions required for UEFI CA 2023
+- **Structured Data**: JSON format for easy integration with scripts and automation
 
 ## Data Files
 
@@ -13,9 +18,7 @@ This repository maintains up-to-date JSON files containing the minimum BIOS/firm
 | `data/Dell.json` | Dell platforms and minimum BIOS versions |
 | `data/HP.json` | HP platforms and minimum BIOS versions |
 
-## Data Format
-
-Both JSON files use a standardized format:
+## JSON Schema
 
 ```json
 {
@@ -34,12 +37,19 @@ Both JSON files use a standardized format:
 
 ## Usage
 
-### PowerShell
+### Raw JSON URL
+
+```
+https://raw.githubusercontent.com/AU-Mark/UEFI-CA-2023-Workstation-Support/main/data/Dell.json
+https://raw.githubusercontent.com/AU-Mark/UEFI-CA-2023-Workstation-Support/main/data/HP.json
+```
+
+### PowerShell Example
 
 ```powershell
-# Load data
-$dellData = Get-Content "data/Dell.json" | ConvertFrom-Json
-$hpData = Get-Content "data/HP.json" | ConvertFrom-Json
+# Load data from GitHub (recommended)
+$dellData = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/AU-Mark/UEFI-CA-2023-Workstation-Support/main/data/Dell.json"
+$hpData = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/AU-Mark/UEFI-CA-2023-Workstation-Support/main/data/HP.json"
 
 # Find a specific model
 $dellData.Data | Where-Object { $_.Model -like "*Latitude 5540*" }
@@ -52,14 +62,17 @@ if ([version]$currentBios -ge [version]$required) {
 }
 ```
 
+## How It Works
+
+1. **Selenium Stealth**: Uses Chrome with stealth options to bypass bot detection
+2. **HTML Parsing**: Extracts model names and firmware versions from vendor pages
+3. **Data Validation**: Verifies extracted data before updating JSON files
+4. **Automatic Updates**: GitHub Actions runs daily to check for changes
+
 ## Data Sources
 
 - **Dell**: [Microsoft 2011 Secure Boot Certificate Expiration](https://www.dell.com/support/kbdoc/en-us/000347876/microsoft-2011-secure-boot-certificate-expiration)
 - **HP**: [HP Commercial PCs - Prepare for new Windows Secure Boot certificates](https://support.hp.com/us-en/document/ish_13070353-13070429-16)
-
-## Update Schedule
-
-Data is automatically updated daily via GitHub Actions.
 
 ## Certificate Information
 
@@ -70,6 +83,10 @@ The Microsoft Secure Boot certificates expiring in 2026:
 | Microsoft Corporation KEK CA 2011 | June 25, 2026 | Microsoft Corporation KEK 2K CA 2023 |
 | Microsoft Windows Production PCA 2011 | October 20, 2026 | Windows UEFI CA 2023 |
 | Microsoft UEFI CA 2011 | June 28, 2026 | Microsoft UEFI CA 2023 |
+
+## Manual Trigger
+
+The workflow can be manually triggered from the Actions tab if you need an immediate update.
 
 ## License
 
